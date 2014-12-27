@@ -13,6 +13,7 @@
 		966A176E1A4D6D5000BD87F8 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 966A176D1A4D6D5000BD87F8 /* Images.xcassets */; };
 		966A17711A4D6D5000BD87F8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 966A176F1A4D6D5000BD87F8 /* Main.storyboard */; };
 		966A177D1A4D6D5000BD87F8 /* PhotosyncTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 966A177C1A4D6D5000BD87F8 /* PhotosyncTests.m */; };
+		966A17881A4DC38400BD87F8 /* MissingFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 966A17871A4DC38400BD87F8 /* MissingFile.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,6 +39,8 @@
 		966A17761A4D6D5000BD87F8 /* PhotosyncTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PhotosyncTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		966A177B1A4D6D5000BD87F8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		966A177C1A4D6D5000BD87F8 /* PhotosyncTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PhotosyncTests.m; sourceTree = "<group>"; };
+		966A17861A4DC38400BD87F8 /* MissingFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MissingFile.h; sourceTree = "<group>"; };
+		966A17871A4DC38400BD87F8 /* MissingFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MissingFile.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,6 +86,8 @@
 				966A17661A4D6D5000BD87F8 /* AppDelegate.m */,
 				966A176A1A4D6D5000BD87F8 /* ViewController.h */,
 				966A176B1A4D6D5000BD87F8 /* ViewController.m */,
+				966A17861A4DC38400BD87F8 /* MissingFile.h */,
+				966A17871A4DC38400BD87F8 /* MissingFile.m */,
 				966A176D1A4D6D5000BD87F8 /* Images.xcassets */,
 				966A176F1A4D6D5000BD87F8 /* Main.storyboard */,
 				966A17631A4D6D5000BD87F8 /* Supporting Files */,
@@ -217,6 +222,7 @@
 			files = (
 				966A176C1A4D6D5000BD87F8 /* ViewController.m in Sources */,
 				966A17691A4D6D5000BD87F8 /* main.m in Sources */,
+				966A17881A4DC38400BD87F8 /* MissingFile.m in Sources */,
 				966A17671A4D6D5000BD87F8 /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
