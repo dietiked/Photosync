@@ -15,7 +15,7 @@
     NSString* userMessage;
     NSOpenPanel* openPanel;
     NSMutableArray* missingFiles;
-    IBOutlet NSTableView* tableView;
+    IBOutlet NSBrowser* browser;
     IBOutlet NSProgressIndicator *progressIndicator;
 }
 

@@ -41,10 +41,16 @@ NSString* const REMOTEFOLDER = @"remoteFolderFullPath";
     // Update the view, if already loaded.
 }
 
-- (BOOL)isPicture:(NSString*)filename {
-    NSArray* components = [filename componentsSeparatedByString:@"."];
-    NSString* extension = [components objectAtIndex:[components count]-1];
-    NSLog(@"Extension: %@", extension);
+- (BOOL)isPictureOrFolder:(NSString*)filepath {
+    //NSArray* components = [filename componentsSeparatedByString:@"."];
+    //NSString* extension = [components objectAtIndex:[components count]-1];
+    NSString *extension = [filepath pathExtension];
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    //NSLog(@"Extension: %@", extension);
+    BOOL isDir;
+    if ([fileManager fileExistsAtPath:filepath isDirectory:&isDir] && isDir) {
+        return true;
+    }
     
     if ([extension isEqualToString:@"png"]) {
     } else if ([extension isEqualToString:@"jpg"]) {
@@ -121,23 +127,19 @@ NSString* const REMOTEFOLDER = @"remoteFolderFullPath";
         NSString *remoteFilePath = [self.remoteFolderFullPath stringByAppendingPathComponent:relativeFilePath];
         // Check if local file exists on remote folder
         BOOL isDir;
-        if (! [fileManager fileExistsAtPath:remoteFilePath]) { // File doesn't exist, add to tempArray
-            [fileManager fileExistsAtPath:remoteFilePath isDirectory:&isDir];
-            if ([self isPicture:fileName] | isDir) {
-                MissingFile* missingFile = [[MissingFile alloc] init];
-                missingFile.isSelected = false;
-                missingFile.filepath = fileFullPath;
-                missingFile.remoteFilePath = remoteFilePath;
+        if (! [fileManager fileExistsAtPath:remoteFilePath]) {
+            if ([self isPictureOrFolder:fileFullPath]) {
+                MissingFile* missingFile = [[MissingFile alloc] initWithLocalFilePath:fileFullPath andRemoteFilePath:remoteFilePath];
+                if ([fileManager fileExistsAtPath:fileFullPath isDirectory:&isDir] && isDir) {
+                    [missingFile setChildren:[self contentForFolderAtPath:fileFullPath]];
+                    [missingFile setIsFile:NO];
+                }
+                
                 [missingElements addObject:missingFile];
-            }
-        } else { // File exists. Check if it's a folder
-            if ([fileManager fileExistsAtPath:remoteFilePath isDirectory:&isDir] && isDir) {
-                // If it's a folder, loop over the folder content
-                NSMutableArray *subfolderContent = [self contentForFolderAtPath:fileFullPath];
-                // Add missing file to the current array
-                [missingElements addObjectsFromArray:subfolderContent];
+                
             }
         }
+        
     }
     return missingElements;
 }
@@ -155,15 +157,19 @@ NSString* const REMOTEFOLDER = @"remoteFolderFullPath";
     
     [self setMissingFiles:missings];
     
+    NSLog(@"%@", missingFiles);
+    
 }
 
 - (IBAction)copySelected:(id)sender {
     [progressIndicator setHidden:false];
     [progressIndicator startAnimation:self];
-    for (NSInteger i=0; i<[self.missingFiles count]; i++) {
-        MissingFile *file = (MissingFile*)[missingFiles objectAtIndex:i];
-        [file copyFile];
+    NSIndexPath *indexPath = [browser selectionIndexPath];
+    MissingFile *next = [missingFiles objectAtIndex:[indexPath indexAtPosition:0]];
+    for (NSInteger i=1; i<[indexPath length]; i++) {
+        next = [[next children] objectAtIndex:[indexPath indexAtPosition:i]];
     }
+    [next copyFile];
     [progressIndicator stopAnimation:self];
     [progressIndicator setHidden:true];
 }
@@ -190,10 +196,14 @@ NSString* const REMOTEFOLDER = @"remoteFolderFullPath";
 }
 
 - (IBAction)viewInFinder:(NSButtonCell*)sender {
-    NSInteger index = [tableView selectedRow];
-    MissingFile *file = [missingFiles objectAtIndex:index];
-    NSURL *fileURL = [NSURL fileURLWithPath:file.filepath];
+    NSIndexPath *indexPath = [browser selectionIndexPath];
+    MissingFile *next = [missingFiles objectAtIndex:[indexPath indexAtPosition:0]];
+    for (NSInteger i=1; i<[indexPath length]; i++) {
+        next = [[next children] objectAtIndex:[indexPath indexAtPosition:i]];
+    }
+    NSURL *fileURL = [NSURL fileURLWithPath:next.filepath];
     [[NSWorkspace sharedWorkspace] activateFileViewerSelectingURLs:[NSArray arrayWithObject:fileURL]];
 }
+
 
 @end
