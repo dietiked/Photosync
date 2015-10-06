@@ -15,6 +15,7 @@
 @synthesize remoteFilePath;
 @synthesize fileExtension;
 @synthesize children;
+@synthesize numberOfMissingFiles;
 
 - (id) init {
     self = [super init];
@@ -33,6 +34,7 @@
         isSelected = false;
         isFile = true;
         isMissing = YES;
+        numberOfMissingFiles = 0;
         [self setFilepath:local];
         [self setRemoteFilePath:remote];
         NSArray *components = [local pathComponents];
@@ -57,7 +59,59 @@
 }
 
 - (NSString*)description {
-    return self.filepath;
+    NSString *descr = @"";
+    if (self.isFile) {
+        descr = self.filename;
+    } else {
+        descr = [NSString stringWithFormat:@"%@ (%li)", self.filename, (long)self.numberOfMissingFiles];
+    }
+    return descr;
+}
+
+- (NSInteger)countNumberOfMissingFiles:(NSArray*)childrenArray {
+    NSInteger numberOfmissingFiles = 0;
+    for (NSInteger i=0; i<[childrenArray count]; i++) {
+        MissingFile *file = [childrenArray objectAtIndex:i];
+        if (file.isFile) {
+            numberOfmissingFiles +=1;
+        } else {
+            numberOfmissingFiles += [self countNumberOfMissingFiles:file.children];
+            [file setNumberOfMissingFiles:[self countNumberOfMissingFiles:file.children]];
+        }
+    }
+    return numberOfmissingFiles;
+}
+
+- (void)calculateNumberOfMissingFiles {
+    if (! self.isFile) {
+        [self setNumberOfMissingFiles:[self countNumberOfMissingFiles:self.children]];
+    }
+}
+
+- (NSDictionary*)sizeOfFile:(MissingFile*)file {
+    unsigned long long sizeLocal = 0;
+    unsigned long long sizeRemote = 0;
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    if (file.isFile) {
+        sizeLocal = [[fileManager attributesOfItemAtPath:self.filepath error:nil] fileSize];
+        sizeRemote = [[fileManager attributesOfItemAtPath:self.remoteFilePath error:nil] fileSize];
+    } else if (! file.isFile) { // Directory
+        for (NSInteger i=0; i<[file.children count]; i++) {
+            MissingFile *subfile = [file.children objectAtIndex:i];
+            NSDictionary *fileSize = [subfile fileSize];
+            sizeLocal += [[fileSize objectForKey:@"sizeLocal"] unsignedLongLongValue];
+            sizeRemote += [[fileSize objectForKey:@"sizeRemote"] unsignedLongLongValue];
+        }
+    }
+    NSNumber *local = [NSNumber numberWithUnsignedLongLong:sizeLocal];
+    NSNumber *remote = [NSNumber numberWithUnsignedLongLong:sizeRemote];
+    NSArray *objs = [NSArray arrayWithObjects:local, remote, nil];
+    NSArray *keys = [NSArray arrayWithObjects:@"sizeLocal", @"sizeRemote", nil];
+    return [NSDictionary dictionaryWithObjects:objs forKeys:keys];
+}
+
+- (NSDictionary*)fileSize {
+    return [self sizeOfFile:self];
 }
 
 @end

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="8191" systemVersion="15A284" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6254"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="8191"/>
+        <capability name="box content view" minToolsVersion="7.0"/>
     </dependencies>
     <scenes>
         <!--Application-->
@@ -672,8 +673,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="736" height="594"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="heV-ac-YKy">
+                            <button verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="heV-ac-YKy">
                                 <rect key="frame" x="650" y="417" width="72" height="32"/>
+                                <animations/>
                                 <buttonCell key="cell" type="push" title="Scan" bezelStyle="rounded" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="X4N-PV-4Xm">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -683,46 +685,30 @@ DQ
                                 </buttonCell>
                                 <connections>
                                     <action selector="scan:" target="XfG-lQ-9wD" id="ZYd-VN-G2r"/>
+                                    <binding destination="XfG-lQ-9wD" name="enabled" keyPath="isButtonEnabled" id="NYl-Uz-7Yx"/>
                                 </connections>
                             </button>
-                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="1ho-5U-W5R">
-                                <rect key="frame" x="14" y="13" width="97" height="32"/>
-                                <buttonCell key="cell" type="push" title="Select all" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="RsB-LN-ORt">
-                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                </buttonCell>
-                                <connections>
-                                    <action selector="selectAll:" target="XfG-lQ-9wD" id="BV8-pE-6Vz"/>
-                                </connections>
-                            </button>
-                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="nNA-JB-kSI">
-                                <rect key="frame" x="111" y="13" width="112" height="32"/>
-                                <buttonCell key="cell" type="push" title="Deselect all" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="ucB-ed-c0Z">
-                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                </buttonCell>
-                                <connections>
-                                    <action selector="deselectAll:" target="XfG-lQ-9wD" id="j93-Uw-LLe"/>
-                                </connections>
-                            </button>
-                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="mhd-vs-cWO">
+                            <button verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mhd-vs-cWO">
                                 <rect key="frame" x="590" y="13" width="132" height="32"/>
+                                <animations/>
                                 <buttonCell key="cell" type="push" title="Copy selection" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="pgT-zx-i3H">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
                                 <connections>
                                     <action selector="copySelected:" target="XfG-lQ-9wD" id="ABd-kw-qLq"/>
+                                    <binding destination="XfG-lQ-9wD" name="enabled" keyPath="isButtonEnabled" id="RbP-jV-Qr1"/>
                                 </connections>
                             </button>
                             <box autoresizesSubviews="NO" title="Source folder" borderType="line" translatesAutoresizingMaskIntoConstraints="NO" id="j1h-Sb-eZo">
                                 <rect key="frame" x="17" y="515" width="702" height="60"/>
-                                <view key="contentView">
+                                <view key="contentView" id="xa3-Qh-Jv8">
                                     <rect key="frame" x="1" y="1" width="700" height="44"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="htp-Ds-ug4">
                                             <rect key="frame" x="16" y="16" width="575" height="17"/>
+                                            <animations/>
                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Label" id="p5f-mV-S9H">
                                                 <font key="font" metaFont="system"/>
                                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -734,37 +720,42 @@ DQ
                                         </textField>
                                         <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="t1F-ac-NqT">
                                             <rect key="frame" x="591" y="6" width="97" height="32"/>
+                                            <animations/>
                                             <buttonCell key="cell" type="push" title="Choose" bezelStyle="rounded" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="dGB-n5-wbd">
                                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
                                             <connections>
                                                 <action selector="openLocalFolderPath:" target="XfG-lQ-9wD" id="MKe-sn-qSz"/>
+                                                <binding destination="XfG-lQ-9wD" name="enabled" keyPath="isButtonEnabled" id="9md-2d-YoQ"/>
                                             </connections>
                                         </button>
                                     </subviews>
+                                    <animations/>
                                 </view>
                                 <constraints>
-                                    <constraint firstItem="t1F-ac-NqT" firstAttribute="top" secondItem="j1h-Sb-eZo" secondAttribute="top" constant="25" id="1Jk-Hy-pHK"/>
-                                    <constraint firstItem="htp-Ds-ug4" firstAttribute="top" secondItem="j1h-Sb-eZo" secondAttribute="top" constant="26" id="1gB-5V-0DO"/>
-                                    <constraint firstItem="htp-Ds-ug4" firstAttribute="leading" secondItem="j1h-Sb-eZo" secondAttribute="leading" constant="16" id="6Zp-Z9-n2i"/>
-                                    <constraint firstItem="t1F-ac-NqT" firstAttribute="leading" secondItem="htp-Ds-ug4" secondAttribute="trailing" constant="8" id="W43-Fy-fXa"/>
-                                    <constraint firstAttribute="bottom" secondItem="htp-Ds-ug4" secondAttribute="bottom" constant="13" id="eNA-5u-vn9"/>
-                                    <constraint firstAttribute="bottom" secondItem="t1F-ac-NqT" secondAttribute="bottom" constant="10" id="oRF-Me-pI2"/>
-                                    <constraint firstAttribute="trailing" secondItem="htp-Ds-ug4" secondAttribute="trailing" constant="109" id="oUL-z0-Drs"/>
-                                    <constraint firstAttribute="trailing" secondItem="t1F-ac-NqT" secondAttribute="trailing" constant="16" id="sm3-GK-NFj"/>
+                                    <constraint firstItem="t1F-ac-NqT" firstAttribute="top" secondItem="j1h-Sb-eZo" secondAttribute="top" constant="25" id="4Hm-Q0-GEE"/>
+                                    <constraint firstItem="htp-Ds-ug4" firstAttribute="leading" secondItem="j1h-Sb-eZo" secondAttribute="leading" constant="16" id="BNo-64-9Qq"/>
+                                    <constraint firstAttribute="trailing" secondItem="htp-Ds-ug4" secondAttribute="trailing" constant="109" id="KI3-7N-U9b"/>
+                                    <constraint firstAttribute="bottom" secondItem="htp-Ds-ug4" secondAttribute="bottom" constant="13" id="c2k-eU-HoP"/>
+                                    <constraint firstAttribute="trailing" secondItem="t1F-ac-NqT" secondAttribute="trailing" constant="16" id="d5G-Vz-frR"/>
+                                    <constraint firstItem="t1F-ac-NqT" firstAttribute="leading" secondItem="htp-Ds-ug4" secondAttribute="trailing" constant="8" id="dUv-wR-bSE"/>
+                                    <constraint firstAttribute="bottom" secondItem="t1F-ac-NqT" secondAttribute="bottom" constant="10" id="fef-xM-I3G"/>
+                                    <constraint firstItem="htp-Ds-ug4" firstAttribute="top" secondItem="j1h-Sb-eZo" secondAttribute="top" constant="26" id="yVy-cF-C7A"/>
                                 </constraints>
+                                <animations/>
                                 <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
                                 <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </box>
                             <box autoresizesSubviews="NO" title="Destination folder" borderType="line" translatesAutoresizingMaskIntoConstraints="NO" id="IhS-ga-kYd">
                                 <rect key="frame" x="17" y="451" width="702" height="60"/>
-                                <view key="contentView">
+                                <view key="contentView" id="Ot2-dj-TZu">
                                     <rect key="frame" x="1" y="1" width="700" height="44"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="54O-c0-jGb">
                                             <rect key="frame" x="16" y="16" width="575" height="17"/>
+                                            <animations/>
                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Label" id="3Ua-qt-kz3">
                                                 <font key="font" metaFont="system"/>
                                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -776,83 +767,83 @@ DQ
                                         </textField>
                                         <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="0yt-GG-x7m">
                                             <rect key="frame" x="591" y="7" width="97" height="32"/>
+                                            <animations/>
                                             <buttonCell key="cell" type="push" title="Choose" bezelStyle="rounded" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="wpq-0v-hyp">
                                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
                                             <connections>
                                                 <action selector="openRemoteFolderPath:" target="XfG-lQ-9wD" id="pIS-1z-8IE"/>
+                                                <binding destination="XfG-lQ-9wD" name="enabled" keyPath="isButtonEnabled" id="oTK-Mp-Yh0"/>
                                             </connections>
                                         </button>
                                     </subviews>
+                                    <animations/>
                                 </view>
                                 <constraints>
-                                    <constraint firstAttribute="bottom" secondItem="0yt-GG-x7m" secondAttribute="bottom" constant="11" id="7In-Vq-bkN"/>
-                                    <constraint firstAttribute="trailing" secondItem="54O-c0-jGb" secondAttribute="trailing" constant="109" id="Fgc-5P-4wF"/>
-                                    <constraint firstItem="0yt-GG-x7m" firstAttribute="top" secondItem="IhS-ga-kYd" secondAttribute="top" constant="24" id="G6F-FE-Mpi"/>
-                                    <constraint firstItem="54O-c0-jGb" firstAttribute="leading" secondItem="IhS-ga-kYd" secondAttribute="leading" constant="16" id="dbv-Qq-3n6"/>
-                                    <constraint firstAttribute="trailing" secondItem="0yt-GG-x7m" secondAttribute="trailing" constant="16" id="rUx-HB-jJL"/>
-                                    <constraint firstAttribute="bottom" secondItem="54O-c0-jGb" secondAttribute="bottom" constant="13" id="svL-MO-hy4"/>
-                                    <constraint firstItem="54O-c0-jGb" firstAttribute="top" secondItem="IhS-ga-kYd" secondAttribute="top" constant="26" id="vLF-Sp-tEh"/>
-                                    <constraint firstItem="0yt-GG-x7m" firstAttribute="leading" secondItem="54O-c0-jGb" secondAttribute="trailing" constant="8" id="y9O-aK-uAi"/>
+                                    <constraint firstItem="54O-c0-jGb" firstAttribute="top" secondItem="IhS-ga-kYd" secondAttribute="top" constant="26" id="CVW-OH-eGX"/>
+                                    <constraint firstItem="0yt-GG-x7m" firstAttribute="leading" secondItem="54O-c0-jGb" secondAttribute="trailing" constant="8" id="LIy-kF-ZQ4"/>
+                                    <constraint firstItem="54O-c0-jGb" firstAttribute="leading" secondItem="IhS-ga-kYd" secondAttribute="leading" constant="16" id="O9E-Lr-ael"/>
+                                    <constraint firstAttribute="trailing" secondItem="0yt-GG-x7m" secondAttribute="trailing" constant="16" id="aBa-cr-tHj"/>
+                                    <constraint firstItem="0yt-GG-x7m" firstAttribute="top" secondItem="IhS-ga-kYd" secondAttribute="top" constant="24" id="hao-eA-Wwq"/>
+                                    <constraint firstAttribute="bottom" secondItem="0yt-GG-x7m" secondAttribute="bottom" constant="11" id="rU0-t3-9uf"/>
+                                    <constraint firstAttribute="bottom" secondItem="54O-c0-jGb" secondAttribute="bottom" constant="13" id="wGu-IH-GGz"/>
+                                    <constraint firstAttribute="trailing" secondItem="54O-c0-jGb" secondAttribute="trailing" constant="109" id="ynp-xR-vxs"/>
                                 </constraints>
+                                <animations/>
                                 <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
                                 <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </box>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="cvj-G7-TZs">
-                                <rect key="frame" x="18" y="427" width="505" height="17"/>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Label" id="50a-C0-GYR">
-                                    <font key="font" metaFont="system"/>
-                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                </textFieldCell>
-                                <connections>
-                                    <binding destination="XfG-lQ-9wD" name="value" keyPath="userMessage" id="fQL-TB-uyk"/>
-                                </connections>
-                            </textField>
-                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="rZW-e4-MLr">
+                            <button verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rZW-e4-MLr">
                                 <rect key="frame" x="523" y="417" width="127" height="32"/>
+                                <animations/>
                                 <buttonCell key="cell" type="push" title="Revert folders" bezelStyle="rounded" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="YeG-td-NdX">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
                                 <connections>
                                     <action selector="revertFolders:" target="XfG-lQ-9wD" id="2ia-P8-OSm"/>
+                                    <binding destination="XfG-lQ-9wD" name="enabled" keyPath="isButtonEnabled" id="jgH-1m-q4l"/>
                                 </connections>
                             </button>
                             <browser verticalHuggingPriority="750" allowsExpansionToolTips="YES" enabled="YES" hasHorizontalScroller="YES" allowsEmptySelection="YES" defaultColumnWidth="100" minColumnWidth="100" maxVisibleColumns="4" titled="YES" separatesColumns="YES" allowsTypeSelect="YES" columnResizingType="auto" translatesAutoresizingMaskIntoConstraints="NO" id="qG8-6F-HiA">
                                 <rect key="frame" x="20" y="61" width="696" height="365"/>
+                                <animations/>
                                 <connections>
                                     <binding destination="wn0-SY-n9x" name="content" keyPath="arrangedObjects" id="Iu2-A1-wnx"/>
-                                    <binding destination="wn0-SY-n9x" name="contentValues" keyPath="arrangedObjects.filename" previousBinding="Iu2-A1-wnx" id="BCY-eh-syM"/>
+                                    <binding destination="wn0-SY-n9x" name="contentValues" keyPath="arrangedObjects.description" previousBinding="Iu2-A1-wnx" id="qCT-K6-gBv"/>
+                                    <binding destination="XfG-lQ-9wD" name="enabled" keyPath="isButtonEnabled" id="9If-Vy-zeS"/>
                                 </connections>
                             </browser>
-                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="pZI-vZ-tfD">
+                            <button verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pZI-vZ-tfD">
                                 <rect key="frame" x="459" y="13" width="131" height="32"/>
+                                <animations/>
                                 <buttonCell key="cell" type="push" title="Open in Finder" bezelStyle="rounded" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="VdV-HH-20e">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
                                 <connections>
                                     <action selector="viewInFinder:" target="XfG-lQ-9wD" id="f0X-8b-RX1"/>
+                                    <binding destination="XfG-lQ-9wD" name="enabled" keyPath="isButtonEnabled" id="GaT-BS-tOO"/>
                                 </connections>
                             </button>
-                            <progressIndicator hidden="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="Rkg-Zg-qTZ">
-                                <rect key="frame" x="441" y="22" width="16" height="16"/>
+                            <progressIndicator hidden="YES" misplaced="YES" maxValue="100" style="bar" translatesAutoresizingMaskIntoConstraints="NO" id="BWC-u8-J3x">
+                                <rect key="frame" x="20" y="19" width="437" height="20"/>
+                                <animations/>
+                            </progressIndicator>
+                            <progressIndicator hidden="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" misplaced="YES" maxValue="100" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="q2Y-Gk-YED">
+                                <rect key="frame" x="505" y="424" width="16" height="16"/>
+                                <animations/>
                             </progressIndicator>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="1ho-5U-W5R" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="20" id="0vd-XO-nk6"/>
                             <constraint firstItem="IhS-ga-kYd" firstAttribute="top" secondItem="j1h-Sb-eZo" secondAttribute="bottom" constant="8" id="1Jn-0t-W1V"/>
                             <constraint firstAttribute="trailing" secondItem="heV-ac-YKy" secondAttribute="trailing" constant="20" id="1ps-aQ-t66"/>
                             <constraint firstItem="qG8-6F-HiA" firstAttribute="top" secondItem="rZW-e4-MLr" secondAttribute="bottom" constant="20" id="6vG-GG-KvZ"/>
                             <constraint firstAttribute="trailing" secondItem="IhS-ga-kYd" secondAttribute="trailing" constant="20" id="9B3-mA-pyL"/>
-                            <constraint firstAttribute="trailing" secondItem="cvj-G7-TZs" secondAttribute="trailing" constant="215" id="BHs-2d-FRN"/>
-                            <constraint firstItem="pZI-vZ-tfD" firstAttribute="leading" secondItem="Rkg-Zg-qTZ" secondAttribute="trailing" constant="8" id="Co9-DM-pRh"/>
-                            <constraint firstAttribute="bottom" secondItem="Rkg-Zg-qTZ" secondAttribute="bottom" constant="22" id="EUM-DG-ahG"/>
+                            <constraint firstItem="pZI-vZ-tfD" firstAttribute="leading" secondItem="BWC-u8-J3x" secondAttribute="trailing" constant="8" id="ElI-nW-JJ3"/>
                             <constraint firstAttribute="bottom" secondItem="pZI-vZ-tfD" secondAttribute="bottom" constant="20" id="F8i-6o-Xwh"/>
                             <constraint firstAttribute="trailing" secondItem="j1h-Sb-eZo" secondAttribute="trailing" constant="20" id="FOP-e2-98D"/>
-                            <constraint firstItem="cvj-G7-TZs" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="20" id="Gnp-vV-Sbv"/>
                             <constraint firstItem="j1h-Sb-eZo" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="20" id="Ixp-4I-Z0d"/>
                             <constraint firstAttribute="trailing" secondItem="qG8-6F-HiA" secondAttribute="trailing" constant="20" id="LJY-eL-nO2"/>
                             <constraint firstAttribute="bottom" secondItem="mhd-vs-cWO" secondAttribute="bottom" constant="20" id="QUw-xs-Xra"/>
@@ -860,20 +851,22 @@ DQ
                             <constraint firstItem="heV-ac-YKy" firstAttribute="leading" secondItem="rZW-e4-MLr" secondAttribute="trailing" constant="12" id="UuY-Cx-qcx"/>
                             <constraint firstItem="mhd-vs-cWO" firstAttribute="leading" secondItem="pZI-vZ-tfD" secondAttribute="trailing" constant="12" id="aZy-2y-kZ6"/>
                             <constraint firstItem="IhS-ga-kYd" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="20" id="aiX-QZ-MhF"/>
+                            <constraint firstItem="q2Y-Gk-YED" firstAttribute="top" secondItem="IhS-ga-kYd" secondAttribute="bottom" constant="15" id="eyd-uw-ZXp"/>
                             <constraint firstItem="j1h-Sb-eZo" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" constant="19" id="fW7-DL-nDH"/>
-                            <constraint firstAttribute="bottom" secondItem="nNA-JB-kSI" secondAttribute="bottom" constant="20" id="hD5-zY-E3v"/>
+                            <constraint firstItem="rZW-e4-MLr" firstAttribute="leading" secondItem="q2Y-Gk-YED" secondAttribute="trailing" constant="8" id="hRt-YY-co6"/>
                             <constraint firstItem="heV-ac-YKy" firstAttribute="top" secondItem="IhS-ga-kYd" secondAttribute="bottom" constant="10" id="ikk-lT-9UB"/>
-                            <constraint firstItem="nNA-JB-kSI" firstAttribute="leading" secondItem="1ho-5U-W5R" secondAttribute="trailing" constant="12" id="jSN-wh-evf"/>
                             <constraint firstItem="rZW-e4-MLr" firstAttribute="top" secondItem="IhS-ga-kYd" secondAttribute="bottom" constant="10" id="m0y-4p-ZGU"/>
+                            <constraint firstAttribute="bottom" secondItem="BWC-u8-J3x" secondAttribute="bottom" constant="20" id="qbL-tE-8AK"/>
                             <constraint firstItem="qG8-6F-HiA" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="20" id="rLZ-lM-IZm"/>
-                            <constraint firstItem="cvj-G7-TZs" firstAttribute="top" secondItem="IhS-ga-kYd" secondAttribute="bottom" constant="11" id="rqv-cd-YKE"/>
                             <constraint firstAttribute="trailing" secondItem="mhd-vs-cWO" secondAttribute="trailing" constant="20" id="wAF-57-yE5"/>
-                            <constraint firstAttribute="bottom" secondItem="1ho-5U-W5R" secondAttribute="bottom" constant="20" id="yv7-Vn-XYX"/>
+                            <constraint firstItem="BWC-u8-J3x" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="20" id="wPC-7E-ojy"/>
                         </constraints>
+                        <animations/>
                     </view>
                     <connections>
                         <outlet property="browser" destination="qG8-6F-HiA" id="u88-lk-gEs"/>
-                        <outlet property="progressIndicator" destination="Rkg-Zg-qTZ" id="8xC-Cl-gER"/>
+                        <outlet property="copyProgressIndicator" destination="BWC-u8-J3x" id="YLt-13-Eyf"/>
+                        <outlet property="scanProgressIndicator" destination="q2Y-Gk-YED" id="chu-pq-ZUC"/>
                     </connections>
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>

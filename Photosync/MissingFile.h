@@ -12,6 +12,7 @@
     NSArray *children;
     NSString *filepath, *filename;
     BOOL isMissing;
+    NSInteger numberOfMissingFiles;
 }
 
 @property BOOL isSelected;
@@ -23,9 +24,12 @@
 @property NSString* remoteFilePath;
 @property NSString* fileExtension;
 @property NSArray *children;
+@property NSInteger numberOfMissingFiles;
 
 - (id) initWithLocalFilePath:(NSString*)local andRemoteFilePath:(NSString*)remote;
 - (BOOL)copyFile;
 - (NSString*)description;
+- (void)calculateNumberOfMissingFiles;
+- (NSDictionary*)fileSize;
 
 @end

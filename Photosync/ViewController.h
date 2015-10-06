@@ -12,11 +12,12 @@
     
     NSString* remoteFolderFullPath;
     NSString* localFolderFullPath;
-    NSString* userMessage;
     NSOpenPanel* openPanel;
     NSMutableArray* missingFiles;
+    BOOL isButtonEnabled;
     IBOutlet NSBrowser* browser;
-    IBOutlet NSProgressIndicator *progressIndicator;
+    IBOutlet NSProgressIndicator *copyProgressIndicator;
+    IBOutlet NSProgressIndicator *scanProgressIndicator;
 }
 
 - (IBAction)openRemoteFolderPath:(id)sender;
@@ -32,6 +33,7 @@
 @property NSString *localFolderFullPath;
 @property NSString *userMessage;
 @property NSMutableArray* missingFiles;
+@property BOOL isButtonEnabled;
 
 @end
 
