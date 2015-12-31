@@ -15,9 +15,10 @@
     NSOpenPanel* openPanel;
     NSMutableArray* missingFiles;
     BOOL isButtonEnabled;
-    IBOutlet NSBrowser* browser;
+    IBOutlet NSOutlineView* outlineView;
     IBOutlet NSProgressIndicator *copyProgressIndicator;
     IBOutlet NSProgressIndicator *scanProgressIndicator;
+    IBOutlet NSButton *onlyMissingFiles;
 }
 
 - (IBAction)openRemoteFolderPath:(id)sender;

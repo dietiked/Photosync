@@ -16,6 +16,7 @@
 @synthesize fileExtension;
 @synthesize children;
 @synthesize numberOfMissingFiles;
+@synthesize delegate;
 
 - (id) init {
     self = [super init];
@@ -34,7 +35,7 @@
         isSelected = false;
         isFile = true;
         isMissing = YES;
-        numberOfMissingFiles = 0;
+        numberOfMissingFiles = 1;
         [self setFilepath:local];
         [self setRemoteFilePath:remote];
         NSArray *components = [local pathComponents];
@@ -44,9 +45,18 @@
 }
 
 - (BOOL)copyFile {
-    if (self.isMissing) {
+    //if (self.isMissing) {
         NSError *error;
         NSFileManager *filemanager = [NSFileManager defaultManager];
+        BOOL isDir;
+        // Check if folder exists
+        if ([filemanager fileExistsAtPath:self.remoteFilePath isDirectory:&isDir] && isDir) {
+            // Loop over children to copy them
+            for (NSInteger i=0; i<[self.children count]; i++) {
+                MissingFile *aFile = (MissingFile*)[self.children objectAtIndex:i];
+                [aFile copyFile];
+            }
+        }
         if (![filemanager copyItemAtPath:self.filepath toPath:self.remoteFilePath error:&error]) {
             NSLog(@"There was an error while copying");
             return false;
@@ -54,18 +64,21 @@
             [self setIsMissing:NO];
             return true;
         }
-    }
+    //}
     return false;
 }
 
 - (NSString*)description {
+    /*
     NSString *descr = @"";
     if (self.isFile) {
         descr = self.filename;
     } else {
         descr = [NSString stringWithFormat:@"%@ (%li)", self.filename, (long)self.numberOfMissingFiles];
     }
-    return descr;
+    return descr; 
+    */
+    return self.filename;
 }
 
 - (NSInteger)countNumberOfMissingFiles:(NSArray*)childrenArray {

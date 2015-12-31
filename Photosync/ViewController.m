@@ -44,7 +44,7 @@ NSString* const REMOTEFOLDER = @"remoteFolderFullPath";
     // Update the view, if already loaded.
 }
 
-- (BOOL)isPictureOrFolder:(NSString*)filepath {
+- (BOOL)isPicture:(NSString*)filepath {
     //NSArray* components = [filename componentsSeparatedByString:@"."];
     //NSString* extension = [components objectAtIndex:[components count]-1];
     NSString *extension = [filepath pathExtension];
@@ -112,11 +112,16 @@ NSString* const REMOTEFOLDER = @"remoteFolderFullPath";
 
 #pragma mark Scan methods
 - (IBAction)scan:(id)sender {
+    // Disable buttons
+    [self setIsButtonEnabled:NO];
+    // Start progress indicator
+    [scanProgressIndicator setHidden:NO];
+    [scanProgressIndicator startAnimation:self];
     // Perfom scan on a new thread
     [NSThread detachNewThreadSelector:@selector(performScan) toTarget:self withObject:nil];
 }
 
-- (NSMutableArray*)contentForFolderAtPath:(NSString*)fullFolderPath {
+- (NSMutableArray*)contentForFolderAtPath:(NSString*)fullFolderPath onlyMissingFiles:(BOOL)listOnlyMissingFiles{
     // Mutable array for missing elements
     NSMutableArray *elements = [NSMutableArray array];
     // Default file manager
@@ -136,21 +141,27 @@ NSString* const REMOTEFOLDER = @"remoteFolderFullPath";
         NSString *remoteFilePath = [self.remoteFolderFullPath stringByAppendingPathComponent:relativeFilePath];
         // Check if local file exists on remote folder
         BOOL isDir;
-        BOOL isPictureOrFolder = [self isPictureOrFolder:fileFullPath];
-        if ([fileManager fileExistsAtPath:fileFullPath isDirectory:&isDir] && !isDir && isPictureOrFolder) {
-            if (! [fileManager fileExistsAtPath:remoteFilePath]) {
-                MissingFile* missingFile = [[MissingFile alloc] initWithLocalFilePath:fileFullPath andRemoteFilePath:remoteFilePath];
-                
-                [elements addObject:missingFile];                
+        BOOL isPicture = [self isPicture:fileFullPath];
+        // File exits
+        if ([fileManager fileExistsAtPath:fileFullPath isDirectory:&isDir] && !isDir && isPicture) {
+            MissingFile* missingFile = [[MissingFile alloc] initWithLocalFilePath:fileFullPath andRemoteFilePath:remoteFilePath];
+            if (![fileManager fileExistsAtPath:remoteFilePath]) {
+                [elements addObject:missingFile];
+            } else if ([fileManager fileExistsAtPath:remoteFilePath] && !listOnlyMissingFiles) {
+                [missingFile setIsMissing:NO];
+                [elements addObject:missingFile];
             }
         } else if ([fileManager fileExistsAtPath:fileFullPath isDirectory:&isDir] && isDir) {
             MissingFile* missingFile = [[MissingFile alloc] initWithLocalFilePath:fileFullPath andRemoteFilePath:remoteFilePath];
-            
-            [missingFile setChildren:[self contentForFolderAtPath:fileFullPath]];
+            [missingFile setChildren:[self contentForFolderAtPath:fileFullPath onlyMissingFiles:listOnlyMissingFiles]];
             [missingFile setIsFile:NO];
             [elements addObject:missingFile];
+            if ([fileManager fileExistsAtPath:remoteFilePath]) {
+                [missingFile setIsMissing:NO];
+            }
         }
     }
+    
     return elements;
 }
 
@@ -179,30 +190,24 @@ NSString* const REMOTEFOLDER = @"remoteFolderFullPath";
         return;
     }
     // Everything is ok, proceed to scan folder
-    // Disable buttons
-    [self setIsButtonEnabled:NO];
-    // Start progress indicator
-    [scanProgressIndicator setHidden:false];
-    [scanProgressIndicator startAnimation:self];
     // Perform scan
-    NSMutableArray *missings = [self contentForFolderAtPath:localFolderFullPath];
+    NSMutableArray *missings = [self contentForFolderAtPath:localFolderFullPath onlyMissingFiles:[onlyMissingFiles state]];
     for (NSInteger i=0; i<[missings count]; i++) {
         MissingFile *file = [missings objectAtIndex:i];
         [file calculateNumberOfMissingFiles];
     }
     // Send the scan result to the main thread
     [self performSelectorOnMainThread:@selector(scanDidComplete:) withObject:missings waitUntilDone:YES];
-    // Stop progress indicator
-    [scanProgressIndicator stopAnimation:self];
-    [scanProgressIndicator setHidden:true];
-    // Enable buttons
-    [self setIsButtonEnabled:YES];
-
 }
 
 // This method is called once the scan has been completed
 - (void)scanDidComplete:(NSMutableArray*)scanResult {
     [self setMissingFiles:scanResult];
+    // Stop progress indicator
+    [scanProgressIndicator stopAnimation:self];
+    [scanProgressIndicator setHidden:YES];
+    // Enable buttons
+    [self setIsButtonEnabled:YES];
 }
 
 
@@ -212,34 +217,20 @@ NSString* const REMOTEFOLDER = @"remoteFolderFullPath";
     [copyProgressIndicator setHidden:false];
     [copyProgressIndicator startAnimation:self];
     // Find which file has been selected
-    NSIndexPath *indexPath = [browser selectionIndexPath];
-    MissingFile *next = [missingFiles objectAtIndex:[indexPath indexAtPosition:0]];
-    for (NSInteger i=1; i<[indexPath length]; i++) {
-        next = [[next children] objectAtIndex:[indexPath indexAtPosition:i]];
-    }
-    // Copy the file on a new thread --> Necessary for large files/folders
-    [NSThread detachNewThreadSelector:@selector(copyFile:) toTarget:self withObject:next];
-    
-}
-
-- (void)copyFile:(MissingFile*)file {
+    MissingFile *missingFile = [[outlineView itemAtRow:[outlineView selectedRow]] representedObject];
     // Set progress indicator
     [copyProgressIndicator setMinValue:0.0];
     [copyProgressIndicator setMaxValue:100.0];
     [copyProgressIndicator setDoubleValue:0.0];
-    // Disable all buttons
-    [self setIsButtonEnabled:NO];
-    // Start a timer to update the progress indicator. The timer runs on a separated thread
-    NSTimer *timer = [NSTimer timerWithTimeInterval:1 target:self selector:@selector(checkCurrentFileSize:) userInfo:file repeats:YES];
-    [[NSRunLoop mainRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
-    // Copy the file
-    [file copyFile];
+    // Copy the file on a new thread --> Necessary for large files/folders
+    [NSThread detachNewThreadSelector:@selector(copyFile:) toTarget:self withObject:missingFile];
+}
+
+- (void)copyDidComplete:(MissingFile*)file {
     // Once finished stop the progress indicator and activate all buttons
     [copyProgressIndicator setDoubleValue:100.0];
     [copyProgressIndicator setHidden:true];
     [copyProgressIndicator stopAnimation:self];
-    // Stop the timer
-    [timer invalidate];
     // Inform the user
     NSAlert *alert = [[NSAlert alloc] init];
     [alert setAlertStyle:NSWarningAlertStyle];
@@ -247,6 +238,21 @@ NSString* const REMOTEFOLDER = @"remoteFolderFullPath";
     [alert beginSheetModalForWindow:self.view.window completionHandler:^(NSInteger result) {
         [self setIsButtonEnabled:YES];
     }];
+    
+}
+
+- (void)copyFile:(MissingFile*)file {
+    // Disable all buttons
+    [self setIsButtonEnabled:NO];
+    // Start a timer to update the progress indicator. The timer runs on a separated thread
+    NSTimer *timer = [NSTimer timerWithTimeInterval:1 target:self selector:@selector(checkCurrentFileSize:) userInfo:file repeats:YES];
+    [[NSRunLoop mainRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
+    // Copy the file
+    [file copyFile];
+    // Stop the timer
+    [timer invalidate];
+    // Return on main thread
+    [self performSelectorOnMainThread:@selector(copyDidComplete:) withObject:file waitUntilDone:YES];
 }
 
 // Update progress indicator
@@ -287,13 +293,10 @@ NSString* const REMOTEFOLDER = @"remoteFolderFullPath";
 }
 
 - (IBAction)viewInFinder:(NSButtonCell*)sender {
-    NSIndexPath *indexPath = [browser selectionIndexPath];
-    MissingFile *next = [missingFiles objectAtIndex:[indexPath indexAtPosition:0]];
-    for (NSInteger i=1; i<[indexPath length]; i++) {
-        next = [[next children] objectAtIndex:[indexPath indexAtPosition:i]];
-    }
-    NSURL *fileURL = [NSURL fileURLWithPath:next.filepath];
+    MissingFile *missingFile = [[outlineView itemAtRow:[outlineView selectedRow]] representedObject];
+    NSURL *fileURL = [NSURL fileURLWithPath:missingFile.filepath];
     [[NSWorkspace sharedWorkspace] activateFileViewerSelectingURLs:[NSArray arrayWithObject:fileURL]];
+
 }
 
 
