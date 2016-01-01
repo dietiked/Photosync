@@ -14,6 +14,7 @@
 		966A17711A4D6D5000BD87F8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 966A176F1A4D6D5000BD87F8 /* Main.storyboard */; };
 		966A177D1A4D6D5000BD87F8 /* PhotosyncTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 966A177C1A4D6D5000BD87F8 /* PhotosyncTests.m */; };
 		966A17881A4DC38400BD87F8 /* MissingFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 966A17871A4DC38400BD87F8 /* MissingFile.m */; };
+		966DA3561C366727006050B1 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 966DA3551C366727006050B1 /* .gitignore */; };
 		96771C2B1C35551D00094954 /* OptionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96771C2A1C35551D00094954 /* OptionsViewController.m */; };
 		96771C321C357A6C00094954 /* UserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 96771C311C357A6C00094954 /* UserDefaults.m */; };
 /* End PBXBuildFile section */
@@ -43,6 +44,7 @@
 		966A177C1A4D6D5000BD87F8 /* PhotosyncTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PhotosyncTests.m; sourceTree = "<group>"; };
 		966A17861A4DC38400BD87F8 /* MissingFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MissingFile.h; sourceTree = "<group>"; };
 		966A17871A4DC38400BD87F8 /* MissingFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MissingFile.m; sourceTree = "<group>"; };
+		966DA3551C366727006050B1 /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		96771C291C35551D00094954 /* OptionsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OptionsViewController.h; sourceTree = "<group>"; };
 		96771C2A1C35551D00094954 /* OptionsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OptionsViewController.m; sourceTree = "<group>"; };
 		96771C311C357A6C00094954 /* UserDefaults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserDefaults.m; sourceTree = "<group>"; };
@@ -70,6 +72,7 @@
 		966A17571A4D6D5000BD87F8 = {
 			isa = PBXGroup;
 			children = (
+				966DA3551C366727006050B1 /* .gitignore */,
 				966A17621A4D6D5000BD87F8 /* Photosync */,
 				966A17791A4D6D5000BD87F8 /* PhotosyncTests */,
 				966A17611A4D6D5000BD87F8 /* Products */,
@@ -212,6 +215,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				966A176E1A4D6D5000BD87F8 /* Images.xcassets in Resources */,
+				966DA3561C366727006050B1 /* .gitignore in Resources */,
 				966A17711A4D6D5000BD87F8 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
