@@ -929,7 +929,7 @@ DQ
                                     <rect key="frame" x="1" y="0.0" width="694" height="333"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" headerView="CRb-J7-edi" viewBased="YES" indentationPerLevel="16" outlineTableColumn="Y7D-UQ-t53" id="TmA-9I-hem">
+                                        <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" autosaveColumns="NO" rowSizeStyle="automatic" headerView="CRb-J7-edi" viewBased="YES" indentationPerLevel="16" outlineTableColumn="Y7D-UQ-t53" id="TmA-9I-hem">
                                             <rect key="frame" x="0.0" y="0.0" width="694" height="310"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <size key="intercellSpacing" width="3" height="2"/>
