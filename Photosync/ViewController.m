@@ -8,6 +8,7 @@
 
 #import "ViewController.h"
 #import "MissingFile.h"
+#import "UserDefaults.h"
 
 NSString* const LOCALFOLDER = @"localFolderFullPath";
 NSString* const REMOTEFOLDER = @"remoteFolderFullPath";
@@ -55,36 +56,48 @@ NSString* const REMOTEFOLDER = @"remoteFolderFullPath";
         return true;
     }
     
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    BOOL isJpg = [userDefaults boolForKey:FILETYPE_JPG];
+    BOOL isPng = [userDefaults boolForKey:FILETYPE_PNG];
+    BOOL isGif = [userDefaults boolForKey:FILETYPE_GIF];
+    BOOL isTif = [userDefaults boolForKey:FILETYPE_TIF];
+    BOOL isNef = [userDefaults boolForKey:FILETYPE_NEF];
+    BOOL isDng = [userDefaults boolForKey:FILETYPE_DNG];
+    BOOL isXmp = [userDefaults boolForKey:FILETYPE_XMP];
+    BOOL isCr2 = [userDefaults boolForKey:FILETYPE_CR2];
+    
     if ([extension isEqualToString:@"png"] || [extension isEqualToString:@"PNG"]) {
+        return isPng ? true : false;
+        
     } else if ([extension isEqualToString:@"jpg"] || [extension isEqualToString:@"JPG"]) {
-        return true;
+        return isJpg ? true : false;
 
     } else if ([extension isEqualToString:@"jpeg"] || [extension isEqualToString:@"JPEG"]) {
-        return true;
+        return isJpg ? true : false;
         
     } else if ([extension isEqualToString:@"gif"] || [extension isEqualToString:@"GIF"]) {
-        return true;
+        return isGif ? true : false;
         
     } else if ([extension isEqualToString:@"raw"] || [extension isEqualToString:@"RAW"]) {
         return true;
         
     } else if ([extension isEqualToString:@"nef"] || [extension isEqualToString:@"NEF"]) {
-        return true;
+        return isNef ? true : false;
         
     } else if ([extension isEqualToString:@"dng"] || [extension isEqualToString:@"DNG"]) {
-        return true;
+        return isDng ? true : false;
         
     } else if ([extension isEqualToString:@"cr2"] || [extension isEqualToString:@"CR2"]) {
-        return true;
+        return isCr2 ? true : false;
         
     } else if ([extension isEqualToString:@"tif"] || [extension isEqualToString:@"TIF"]) {
-        return true;
+        return isTif ? true : false;
     
     } else if ([extension isEqualToString:@"tiff"] || [extension isEqualToString:@"TIFF"]) {
-        return true;
+        return isTif ? true : false;
         
     } else if ([extension isEqualToString:@"xmp"] || [extension isEqualToString:@"XMP"]) {
-        return true;
+        return isXmp ? true : false;
         
     }
 
@@ -191,7 +204,9 @@ NSString* const REMOTEFOLDER = @"remoteFolderFullPath";
     }
     // Everything is ok, proceed to scan folder
     // Perform scan
-    NSMutableArray *missings = [self contentForFolderAtPath:localFolderFullPath onlyMissingFiles:[onlyMissingFiles state]];
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    BOOL isOnlyMissingFiles = [userDefaults boolForKey:ONLY_MISSING_FILES];
+    NSMutableArray *missings = [self contentForFolderAtPath:localFolderFullPath onlyMissingFiles:isOnlyMissingFiles];
     for (NSInteger i=0; i<[missings count]; i++) {
         MissingFile *file = [missings objectAtIndex:i];
         [file calculateNumberOfMissingFiles];
